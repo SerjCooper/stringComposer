@@ -1,14 +1,19 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
-
     public static void main(String[] args) {
         System.out.println(compareLines("Логопед", "Лохопут"));
-        System.out.println(compareLines("Логопед", "Логопед"));
-        System.out.println(compareLines("Как же много букв в этом огромном тексте, это просто что-то. Олололо", "Как же много букФ в этом огромном тексте, это просто что-то. Олололо"));
-        System.out.println(compareLines("Разная длина строка", "Вот"));
-        System.out.println(compareLines("vze", ""));
+        System.out.println(getRequisitCodeFromRequirementChar("a 11.4 a2"));
+        System.out.println(getRequisitCodeFromRequirementRegex("a 11.4 a2"));
     }
 
+    /*
+    Сравнивание строк с нахождением первого отличившегося символа.
+    Если строки совпадают, будет возвращена пустая строка.
+    Если длина строк разная, то будет выведено сообщение об этом и проверка на совпадение не будет произведена.
+    Во всех остальных случаях будет показан первый символ с которого начинается различие
+    */
     public static String compareLines(String first, String second) {
         if (first.equals(second))
             return "";
@@ -38,4 +43,43 @@ public class Main {
         }
         return out;
     }
+
+    /*
+    Поиск и вывод первого найденного числа (целого или дробного)
+    с посимвольным разбором
+     */
+    public static String getRequisitCodeFromRequirementChar(String title) {
+        String out = "";
+        char chars [] = title.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if(Character.isDigit(chars[i])) {
+                out += chars[i];
+                continue;
+            }
+            if( i > 0 && Character.isDigit(chars[i-1])){
+                if(chars[i] == '.') {
+                    out += chars[i];
+                    continue;
+                }
+                if( !Character.isDigit(chars[i])){
+                    break;
+                }
+            }
+        }
+        return out;
+    }
+    /*
+    Поиск и вывод первого найденного числа (целого или дробного)
+    с помощью регулярных выражений
+    */
+    public static String getRequisitCodeFromRequirementRegex(String title) {
+        String regex = "\\d\\.\\d+|\\d+\\.\\d*|\\d+";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(title);
+        while (matcher.find()){
+            return title.substring(matcher.start(), matcher.end());
+        }
+        return "";
+    }
+
 }
