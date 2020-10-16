@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -6,6 +9,12 @@ public class Main {
         System.out.println(compareLines("Логопед", "Лохопут"));
         System.out.println(getRequisitCodeFromRequirementChar("a 11.4 a2"));
         System.out.println(getRequisitCodeFromRequirementRegex("a 11.4 a2"));
+
+        HashMap<Integer, String> testMap = new HashMap<>();
+        testMap.put(12345, "Улица");
+        testMap.put(987, "Фонарь");
+        testMap.put(23423562, "Аптека");
+        System.out.println(getTransparentMap(testMap));
     }
 
     /*
@@ -82,4 +91,14 @@ public class Main {
         return "";
     }
 
+    //Создаётся новая перевёрнутая мапа, т.е. ключ значения поменялись местами
+    public static Map<?, ?> getTransparentMap(Map inMap){
+        Map outMap = new HashMap();
+        Set<Map.Entry<?,?>> entrySet = inMap.entrySet();
+
+        for (Map.Entry tempSet: entrySet) {
+            outMap.put(tempSet.getValue(), tempSet.getKey());
+        }
+        return outMap;
+    }
 }
